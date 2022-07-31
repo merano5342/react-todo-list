@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import RenderTip from '../RenderTip';
 import TodoForm from '../TodoForm';
 import TodoItem from '../TodoItem';
@@ -19,32 +19,39 @@ const TodoList = () => {
   const [list, setList] = useState(initialList);
   const [filterType, setFilterType] = useState('all');
 
-  const atAddItem = (text: string) => {
-    const item: TodoType = {
-      id: new Date().getTime().toString(),
-      text,
-      done: false,
-    };
-    setList(list.concat(item));
-  };
-
-  const atToggleItem = (id: string) => {
-    const newList = list.map((item: TodoType) => {
-      if (item.id === id) {
-        return {
-          id: item.id,
-          text: item.text,
-          done: !item.done,
-        };
-      }
-      return item;
+  const atAddItem = useCallback((text: string) => {
+    setList((prev) => {
+      const item: TodoType = {
+        id: new Date().getTime().toString(),
+        text,
+        done: false,
+      };
+      return prev.concat(item);
     });
-    setList(newList);
-  };
+  }, []);
 
-  const atFilterChange = (type: string) => {
+  const atDeleteItem = useCallback((id: string) => {
+    setList((prev) => prev.filter((item) => item.id !== id));
+  }, []);
+
+  const atToggleItem = useCallback((id: string) => {
+    setList((prev) => {
+      return prev.map((item: TodoType) => {
+        if (item.id === id) {
+          return {
+            id: item.id,
+            text: item.text,
+            done: !item.done,
+          };
+        }
+        return item;
+      });
+    });
+  }, []);
+
+  const atFilterChange = useCallback((type: string) => {
     setFilterType(type);
-  };
+  }, []);
 
   const filtersList = list.filter((todo: TodoType) => {
     if (filterType === 'completed') {
@@ -69,6 +76,7 @@ const TodoList = () => {
             done={item.done}
             text={item.text}
             onToggleItem={atToggleItem}
+            onDeleteItem={atDeleteItem}
           />
         ))}
       </div>

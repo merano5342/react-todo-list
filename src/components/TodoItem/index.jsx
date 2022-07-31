@@ -10,14 +10,19 @@ type TodoItemProps = {
   done: boolean,
   text: string,
   onToggleItem: (id: string) => void,
+  onDeleteItem: (id: string) => void,
 };
 
 const TodoItem: React.FC<TodoItemProps> = (props) => {
-  const { id, text, done, onToggleItem } = props;
+  const { id, text, done, onToggleItem, onDeleteItem } = props;
 
-  const atClick = () => {
+  const atClick = React.useCallback(() => {
     onToggleItem(id);
-  };
+  }, [id, onToggleItem]);
+
+  const atDelete = React.useCallback(() => {
+    onDeleteItem(id);
+  }, [id, onDeleteItem]);
 
   return (
     <section data-name="TodoItem" data-gradient className="style-3">
@@ -25,10 +30,11 @@ const TodoItem: React.FC<TodoItemProps> = (props) => {
       <div data-active={done} className={style.todoItem} onClick={atClick}>
         {text}
       </div>
-      {/* FIXME delete not working */}
-      <button className={cx('btn btn-danger')}>Delete</button>
+      <button className={cx('btn btn-danger')} onClick={atDelete}>
+        Delete
+      </button>
     </section>
   );
 };
 
-export default TodoItem;
+export default React.memo(TodoItem);

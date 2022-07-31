@@ -35,4 +35,4 @@ const TodoFilter: React.FC<TodoFilterProps> = (props) => {
     </section>
   );
 };
-export default TodoFilter;
+export default React.memo(TodoFilter);
