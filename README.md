@@ -9,7 +9,7 @@
 1. 將專案下載至本地
 打開 terminal 輸入：
 ```
-git clone https://github.com/merano5342/react-shop.git
+git clone https://github.com/merano5342/react-todo-list.git
 ```
 
 2. 下載所需套件

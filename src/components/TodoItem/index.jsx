@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
+import React, { useCallback } from 'react';
 import cx from 'classnames';
 import RenderTip from '../RenderTip';
 // TODO
@@ -16,11 +16,11 @@ type TodoItemProps = {
 const TodoItem: React.FC<TodoItemProps> = (props) => {
   const { id, text, done, onToggleItem, onDeleteItem } = props;
 
-  const atClick = React.useCallback(() => {
+  const atClick = useCallback(() => {
     onToggleItem(id);
   }, [id, onToggleItem]);
 
-  const atDelete = React.useCallback(() => {
+  const atDelete = useCallback(() => {
     onDeleteItem(id);
   }, [id, onDeleteItem]);
 
